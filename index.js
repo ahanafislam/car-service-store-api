@@ -18,6 +18,7 @@ async function run() {
     try {
         await client.connect();
         const serviceCollection = client.db('geneusCar').collection('service');
+        const orderCollection = client.db('geneusCar').collection('order');
 
         app.get('/service', async (req, res) => {
             const query = {};
@@ -45,6 +46,12 @@ async function run() {
             const result = await serviceCollection.deleteOne(query);
             res.send(result);
         })
+
+        app.post('/order', async (req, res) => {
+            const order = req.body;
+            const result = await orderCollection.insertOne(order);
+            res.send(result);
+        });
     }
     finally {
         // await client.close();
